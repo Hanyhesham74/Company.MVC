@@ -1,4 +1,6 @@
 ﻿
+using Demo.DataAccess.Models.DepartmentModule;
+using Demo.DataAccess.Models.EmployeeModule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,9 @@ namespace Demo.DataAccess.Data.Contexts
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        public DbSet<Department> Departments { get; set; }   
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }  
+
 
     }
 }

@@ -1,45 +1,18 @@
 ﻿
 
 using Demo.DataAccess.Data.Contexts;
+using Demo.DataAccess.Models.DepartmentModule;
 
 namespace Demo.DataAccess.Data.Repostitories
 {
     //Contrler -[PLL]> Service -[BLL]> Repository -[DAL]> DbContext-[DAL]> Database
-   public class DepartmentRepository : IDepartmentRepository
+   public class DepartmentRepository : GenericRepository<Department>, IDepartmentRepository
     {
-        private readonly ApplicationDbContext _dbcontext;
-        public DepartmentRepository(ApplicationDbContext dbContext)
-        {
-            _dbcontext = dbContext;
-        }
 
-        public Department? Get(int id)
+        private readonly ApplicationDbContext _dbcontext; 
+        public DepartmentRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
-            var department = _dbcontext.Departments.Find(id);
-
-            return department;
+            _dbcontext = dbContext; 
         }
-
-        public IEnumerable<Department> GetAll()
-        {
-            var departments = _dbcontext.Departments.ToList();
-            return departments;
-        }
-        public int Add(Department department)
-        {
-            _dbcontext.Departments.Add(department);
-           return _dbcontext.SaveChanges();
-        }
-        public int Update(Department department)
-        {
-            _dbcontext.Departments.Update(department);
-           return _dbcontext.SaveChanges();
-        }
-        public int Delete(Department department)
-        {
-            _dbcontext.Departments.Remove(department);
-           return _dbcontext.SaveChanges();
-        }
-
     }
 }
