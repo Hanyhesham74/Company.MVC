@@ -1,12 +1,10 @@
 ﻿
+using Demo.DataAccess.Models.DepartmentModule;
+
 namespace Demo.DataAccess.Data.Repostitories
 {
-    public interface IDepartmentRepository
+    public interface IDepartmentRepository:IGenericRepository<Department>
     {
-        int Add(Department department);
-        int Delete(Department department);
-        Department? Get(int id);
-        IEnumerable<Department> GetAll();
-        int Update(Department department);
+        
     }
 }
