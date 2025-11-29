@@ -1,10 +1,13 @@
 ﻿using Demo.BusinessLogic.DTOS;
 using Demo.BusinessLogic.Services;
+using Demo.DataAccess.Models.DepartmentModule;
 using Demo.Presentation.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.Json;
 using Microsoft.Extensions.Hosting;
 using NuGet.Packaging.Signing;
 using System.Timers;
+//using DepartmentViewModel = Demo.DataAccess.Models.DepartmentModule.DepartmentViewModel;
 
 namespace Demo.Presentation.Controllers
 {
@@ -21,6 +24,10 @@ namespace Demo.Presentation.Controllers
         }
         public IActionResult Index()
         {
+            //ViewData["Message"] = "Hello From Data";
+            //ViewBag.Message = "Hello From ViewBag";
+            //ViewData["Message"]=new DepartmentDto() { Name="Test"};
+            //ViewBag.Message = new DepartmentDto() { Name = "Test from ViewBag" };
             var departments = _departmentService.GetAllDepartments();
             return View(departments);
         }
@@ -30,14 +37,24 @@ namespace Demo.Presentation.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(CreateDepartmentDto departmentDto)
+        public IActionResult Create(DepartmentViewModel departmentViewModel)
         {
+            
+
+
             if (ModelState.IsValid)
             {
                 try {
-                    int result = _departmentService.AddDepartment(departmentDto);
+                    int result = _departmentService.AddDepartment(new CreateDepartmentDto()
+                    {
+                        Code = departmentViewModel.Code,
+                        Name = departmentViewModel.Name,
+                        Description = departmentViewModel.Description,
+                        DateOfCreation =departmentViewModel.CreatedOn// DateOnly.FromDateTime(departmentViewModel.CreatedOn??DateTime.Now)
+                    });
                     if (result > 0)
                     {
+                        TempData["SuccessMessage"] = "Department Created Successfully";
                         return RedirectToAction("Index");
                     }
                     else {
@@ -60,7 +77,7 @@ namespace Demo.Presentation.Controllers
                 }
             }
 
-            return View(departmentDto);
+            return View(departmentViewModel);
         }
 
         public IActionResult Details(int? id)
@@ -76,7 +93,7 @@ namespace Demo.Presentation.Controllers
             if (!id.HasValue) return BadRequest();
             var depaetment = _departmentService.GetDepartmentById(id.Value);
             if (depaetment is null) return NotFound();
-            var model = new DepartmentEditViewModel()
+            var model = new DepartmentViewModel()
             {
                 Name = depaetment.Name,
                 Description = depaetment.Description,
@@ -91,7 +108,7 @@ namespace Demo.Presentation.Controllers
         
 
         [HttpPost]
-        public IActionResult Edit([FromRoute]int?id,DepartmentEditViewModel departmentVM)
+        public IActionResult Edit([FromRoute]int?id, DepartmentViewModel departmentVM)
         {
             if (ModelState.IsValid)
             {
