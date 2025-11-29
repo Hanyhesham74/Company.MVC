@@ -42,5 +42,7 @@ namespace Demo.BusinessLogic.DTOS.EmployeeDto
         public Gender Gender { get; set; }
 
         public EmployeeType EmployeeType { get; set; }
+
+        public int? DepartmentId { get; set; }
     }
 }

@@ -23,7 +23,8 @@ namespace Demo.BusinessLogic.Factories
                 Salary = employee.Salary,
                 IsActive = employee.IsActive,
                 Gender = employee.Gender.ToString(),
-                EmployeeType = employee.EmployeeType.ToString()
+                EmployeeType = employee.EmployeeType.ToString(),
+                Department= employee.Department != null ? employee.Department.Name : null
             };
         }
         public static EmployeeDetailsDto ToEmployeeDetailsDto(this Employee employee)

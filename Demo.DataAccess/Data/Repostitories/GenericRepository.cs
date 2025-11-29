@@ -16,14 +16,14 @@ namespace Demo.DataAccess.Data.Repostitories
             _dbcontext = dbContext;
         }
 
-        public TEntity? Get(int id)
+         public virtual TEntity? Get(int id) 
         {
             var entity = _dbcontext.Set<TEntity>().Find(id);
 
             return entity;
         }
 
-        public IEnumerable<TEntity> GetAll()
+         public virtual IEnumerable<TEntity> GetAll() 
         {
             var entity = _dbcontext.Set<TEntity>().Where(entity=>entity.IsDeleted==false).ToList();
             return entity;

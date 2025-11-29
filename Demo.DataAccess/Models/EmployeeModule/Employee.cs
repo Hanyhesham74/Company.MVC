@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Demo.DataAccess.Models.DepartmentModule;
+using Demo.DataAccess.Models;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace Demo.DataAccess.Models.EmployeeModule
 {
@@ -18,5 +22,9 @@ namespace Demo.DataAccess.Models.EmployeeModule
         public DateTime HiringDate { get; set; }
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+
+        public virtual Department? Department { get; set; }
+        [Display(Name="Department")]
+        public int? DepartmentId { get; set; }
     }
 }

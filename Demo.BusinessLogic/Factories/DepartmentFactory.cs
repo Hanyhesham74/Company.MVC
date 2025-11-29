@@ -48,6 +48,17 @@ namespace Demo.BusinessLogic.Factories
                 
             };
         }
+        //public static DepartmentViewModel ToDepartment1(this CreateDepartmentDto createDepartmentDto)
+        //{
+        //    return new DepartmentViewModel
+        //    {
+        //        Name = createDepartmentDto.Name,
+        //        Description = createDepartmentDto.Description,
+        //        Code = createDepartmentDto.Code,
+        //        CreatedOn = createDepartmentDto.DateOfCreation.ToDateTime(new TimeOnly()),
+
+        //    };
+        //}
         public static Department ToDepartment(this UpdatedDepartmentDto DepartmentDto)
         {
             return new Department

@@ -1,6 +1,7 @@
 ﻿using Demo.BusinessLogic.DTOS.EmployeeDto;
 using Demo.BusinessLogic.Services;
 using Demo.DataAccess.Models.EmployeeModule;
+using Demo.Presentation.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Presentation.Controllers
@@ -27,12 +28,26 @@ namespace Demo.Presentation.Controllers
         return View();
         }
         [HttpPost]
-        public IActionResult Create(CreateEmployeeDto employe)
+        public IActionResult Create(EmployeeViewModel employeeViewModel) 
         {
             if (ModelState.IsValid) {
                 try
                 {
-                  int result=  _employeeService.AddEmployee(employe);
+                  int result=  _employeeService.AddEmployee(new CreateEmployeeDto()
+                  {
+                      Address = employeeViewModel.Address,
+                      Age = employeeViewModel.Age,
+                      Email = employeeViewModel.Email,
+                      Gender=employeeViewModel.Gender,
+                      EmployeeType=employeeViewModel.EmployeeType,
+                      IsActive=employeeViewModel.IsActive,
+                      Name=employeeViewModel.Name,
+                      PhoneNumber=employeeViewModel.PhoneNumber,
+                      Salary=employeeViewModel.Salary,
+                      HiringDate=employeeViewModel.HiringDate,
+                      DepartmentId=employeeViewModel.DepartmentId
+                      
+                  });
                     if(result>0) return RedirectToAction("Index");
                     else
                     {
@@ -54,7 +69,7 @@ namespace Demo.Presentation.Controllers
                     }
                 }
             }
-            return View(employe);
+            return View(employeeViewModel);
         }
         [HttpGet]
         public IActionResult Details(int? id) { 
@@ -68,9 +83,9 @@ namespace Demo.Presentation.Controllers
         if(!id.HasValue) return BadRequest();
         var employe=_employeeService.GetEmployeeById(id.Value);
             if(employe==null)return NotFound();
-            var EmployeDto = new UpdatedEmployeeDto()
+            var EmployeDto = new EmployeeViewModel()
             {
-                Id = employe.Id,
+               
                 Name = employe.Name,
                 Age = employe.Age,
                 Address = employe.Address,
@@ -80,19 +95,36 @@ namespace Demo.Presentation.Controllers
                 HiringDate = employe.HiringDate,
                 IsActive = employe.IsActive,
                 EmployeeType=Enum.Parse<EmployeeType>(employe.EmployeeType),
-                Gender=Enum.Parse<Gender>(employe.Gender)
+                Gender=Enum.Parse<Gender>(employe.Gender),
+
+
             };
             return View(EmployeDto);
         }
         [HttpPost]
-        public IActionResult Edit([FromRoute]int? id,UpdatedEmployeeDto employeeDto)
+        public IActionResult Edit([FromRoute]int? id,EmployeeViewModel employeeViewModel)
         {
             if(!id.HasValue) return BadRequest();
             if (ModelState.IsValid)
             {
                 try
                 {
-                  int num=  _employeeService.UpdateEmployee(employeeDto);
+                  int num=  _employeeService.UpdateEmployee(new UpdatedEmployeeDto()
+                  {
+                      Address=employeeViewModel.Address,
+                      Age=employeeViewModel.Age,
+                      Email=employeeViewModel.Email,
+                      Gender= employeeViewModel.Gender,
+                      IsActive=employeeViewModel.IsActive,
+                      Name=employeeViewModel.Name,
+                      PhoneNumber=employeeViewModel.PhoneNumber,
+                      Salary=employeeViewModel.Salary,
+                      EmployeeType=employeeViewModel.EmployeeType,
+                      HiringDate=employeeViewModel.HiringDate,
+                      DepartmentId=employeeViewModel.DepartmentId,
+                      Id=id.Value
+
+                  });
                     if (num > 0)
                     {
                        return RedirectToAction(nameof(Index));
@@ -117,7 +149,7 @@ namespace Demo.Presentation.Controllers
                 }
                 
             }
-            return View(employeeDto);
+            return View(employeeViewModel);
         }
 
         [HttpPost]
